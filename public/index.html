@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealTime - Multiplayer Snake Game | 2021 (c)</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div>
+
+    </div>
+
+    <div id="lobby">
+        <h1>RealTime - Multiplayer Snake 2021</h1>
+        <h2>Welcome!</h2>
+        <label for="playerName">Player Name: </label>
+        <input type="text" id="playerName">
+        <input type="button" value="Enter" onclick="enterGame()">
+    </div>
+    <div id="gamePanel" style="display: none;">
+        <div id="scoreBoard">
+            <h4>Your Score: <span id="score">0</span></h4>
+            <h4>Your Rank: <span id="rank">...</span></h4>
+            <a href="#" onclick="leaveGame()" style="position: absolute; right: 6px;">Leave Game</a>
+        </div>
+        <div id="scoreTable">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+            </table>
+        </div>
+        <span id="spanReplay" style="margin-top:10px; display: none;"><a href="#" onclick="replayGame()">Try
+                Again</a></span>
+        <div id="game"></div>
+        <div style="position: relative;">
+            <div id="mobilePad" style="font-size: 3.2em !important;">
+                <div class="row" style="margin-right: 66px; right: 0;">
+                    <div id="topRight">
+                        <i class="fas fa-long-arrow-alt-up" style="position: relative; left: 10px; top: 8px;"></i>
+                        <i class="fas fa-long-arrow-alt-right" style="position: relative; top: 20px;"></i>
+                    </div>
+                </div>
+                <div class="row" style="margin-left: 66px;">
+                    <div id="downLeft">
+                        <i class="fas fa-long-arrow-alt-left" style="position: relative; top: 16px;"></i>
+                        <i class="fas fa-long-arrow-alt-down" style="position: relative; right: 9px; top: 28px;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h5 id="onlineUsers">Total Online: <span id="totalOnline"></span></h5>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="snakeGame.js"></script>
+    <script src="mobile-buttons.js"></script>
+    <script src="iphone-pull-down-refresh-block.js"></script>
+    <script>
+        const socket = io("http://192.168.1.14:3000");
+
+        socket.on('onlineUsers', data => {
+            document.getElementById('totalOnline').innerHTML = data;
+        });
+
+        socket.on('top10list', data => {
+
+            let html = '';
+            document.getElementById('rank').innerHTML = data.rank + ' / ' + data.total;
+            data.list.forEach((player, index) => {
+                let isActive = !player.active ? "style='text-decoration:line-through;'" : "";
+                let isMe = data.playerId == player.id ? "class='active-row'" : "";
+                html += `<tr ${isMe} ${isActive}>
+                        <td>${index + 1}</td>
+                        <td>${player.playerName}</td>
+                        <td>${player.score * 10}</td>
+                    </tr>`
+            });
+            document.getElementById('tbody').innerHTML = html;
+        })
+
+        function updateScore() {
+            socket.emit('updateScore', player.score);
+        }
+
+        function emitGaveOver() {
+            socket.emit('gameOver');
+        }
+        function replayGame() {
+            socket.emit('replayGame');
+            startGame();
+        }
+    </script>
+</body>
+
+</html>

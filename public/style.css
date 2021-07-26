@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    text-align: center;
+    background-color: antiquewhite;
+    overscroll-behavior-y: contain;
+    overflow: hidden;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 0.6em;
+
+}
+
+#lobby {
+    margin:3em auto;
+    padding:3em;
+    border:4px dashed #61a461;
+}
+
+#game {
+    border: 5px solid #61a461;
+    background-color: rgb(77, 61, 61);
+    position: relative;
+    margin: 2em auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+}
+
+#lobby h1,h2 {
+    margin: 0.5em auto;
+}
+
+
+#scoreBoard {
+    background-color: rgb(77, 61, 61,0.2);
+}
+
+#mobilePad #topRight {
+    width: 60px;
+    height: 60px;
+    background-color: bisque;
+    border:1px solid red;
+    float: right;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+}
+
+#mobilePad {
+    position: absolute;
+    top:0;
+    width: 100%;
+}
+
+#mobilePad #downLeft {
+    width: 60px;
+    height: 60px;
+    background-color: bisque;
+    border:1px solid red;
+    float: left;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+#onlineUsers {
+    display: inline-block;
+    position: absolute;
+    top:6px;
+    right: 6px;
+}
+
+.row {
+    clear: both;
+}
+
+.snakePart {
+    border-radius: 50%;
+    background-color: rgb(205, 255, 25);
+    position: absolute;
+}
+
+.food {
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+}
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    margin-top: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+
+@media only screen and (min-width:600px) {
+    body{
+        font-size: 1.2em;
+    }
+
+    #mobilePad {
+        display: none;
+    }
+}
