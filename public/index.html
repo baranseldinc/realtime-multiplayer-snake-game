@@ -70,7 +70,7 @@
     <script src="iphone-pull-down-refresh-block.js"></script>
     <script>
 
-        const socket = io("http://localhost:5000/");
+        const socket = io("");
 
         socket.on('onlineUsers', data => {
             document.getElementById('totalOnline').innerHTML = data;
