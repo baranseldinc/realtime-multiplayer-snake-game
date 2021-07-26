@@ -69,7 +69,8 @@
     <script src="mobile-buttons.js"></script>
     <script src="iphone-pull-down-refresh-block.js"></script>
     <script>
-        const socket = io("https://realtime-snake.herokuapp.com/:3000");
+
+        const socket = io(prompt("enter endpoint with port number"));
 
         socket.on('onlineUsers', data => {
             document.getElementById('totalOnline').innerHTML = data;
