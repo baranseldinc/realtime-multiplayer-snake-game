@@ -10,7 +10,7 @@ function handleClickMobileButtons(e) {
 }
 
 var btnTopRight = document.getElementById('topRight');
-btnTopRight.addEventListener('mousedown', () => {
+btnTopRight.addEventListener('touchstart', () => {
     let lastKey = player.keyList[player.keyList.length - 1] || snake.direction;
     let e = {}
     if (lastKey == directions.UP || lastKey == directions.DOWN) {
@@ -20,7 +20,7 @@ btnTopRight.addEventListener('mousedown', () => {
 });
 
 var btnTopRight = document.getElementById('downLeft');
-btnTopRight.addEventListener('mousedown', () => {
+btnTopRight.addEventListener('touchstart', () => {
     let lastKey = player.keyList[player.keyList.length - 1] || snake.direction;
     let e = {}
     if (lastKey == directions.UP || lastKey == directions.DOWN) {

@@ -195,11 +195,14 @@ function startGame() {
     generateFood();
     gameLoop();
     document.getElementById('spanReplay').style.display = "none";
-    
+
 }
 
 function enterGame() {
     const playerName = document.getElementById('playerName').value;
+    if (!playerName)
+        return;
+    player.playerName = playerName;
     socket.emit('enterGame', { playerName });
     document.getElementById('lobby').style.display = "none";
     document.getElementById('gamePanel').style.display = "block";

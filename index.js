@@ -2,11 +2,11 @@ const express = require("express");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
-const port = 3000;
+const port = 5000;
 
 const players = [];
 
-server.listen(process.env.PORT || 5000, () => {
+server.listen(process.env.PORT || port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
 io.on('connection', socket => {
     emitOnlineUsers();
     socket.on('enterGame', data => {
+        console.log(data);
         const player = players.find(player => player.playerId == socket.id);
         if (player) {
             player.playerName = data.playerName;
@@ -44,14 +45,6 @@ io.on('connection', socket => {
     socket.on('leavegame', () => {
         leaveGame(socket);
     });
-
-    socket.on('replayGame', () => {
-        const player = players.find(player => player.id = socket.id);
-        if (player) {
-            player.active = true;
-            player.score = 0;
-        }
-    })
 
     socket.on('updateScore', data => {
         let player = players.find(item => item.playerId == socket.id);
@@ -92,7 +85,7 @@ function emitOnlineUsers() {
 }
 
 function emitTopList(socket) {
-    io.emit('top10list', {
+    io.emit('topList', {
         list: players.slice(0, 3),
         total: players.length,
         rank: players.findIndex(player => player.id == socket.id) + 1,

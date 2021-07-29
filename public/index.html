@@ -70,13 +70,13 @@
     <script src="iphone-pull-down-refresh-block.js"></script>
     <script>
 
-        const socket = io("");
+        const socket = io();
 
         socket.on('onlineUsers', data => {
             document.getElementById('totalOnline').innerHTML = data;
         });
 
-        socket.on('top10list', data => {
+        socket.on('topList', data => {
 
             let html = '';
             document.getElementById('rank').innerHTML = data.rank + ' / ' + data.total;
@@ -100,7 +100,7 @@
             socket.emit('gameOver');
         }
         function replayGame() {
-            socket.emit('replayGame');
+            socket.emit('enterGame', player);
             startGame();
         }
     </script>
