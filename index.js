@@ -115,7 +115,13 @@ function trace(req, reqType, msg) {
     const ip = reqType == "req" ? req.headers['x-forwarded-for'] || req.socket.remoteAddress
         : req.handshake.address;
     const datetime = new Date().toLocaleString('en-US', {
-        timeZone: 'Europe/Istanbul'
+        timeZone: 'Europe/Istanbul',
+        month: 'long',
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: '2-digit',
+        second: '2-digit'
     });
 
     let traceMsg = datetime + ' ' + ip + ' ' + msg;
