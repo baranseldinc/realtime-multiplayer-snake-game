@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
+const fs = require('fs');
 const port = 5000;
 
 const players = [];
@@ -12,21 +13,20 @@ server.listen(process.env.PORT || port, () => {
 
 
 app.get('/', (req, res) => {
+    trace(req, "req", "/");
     const indexFile = __dirname + '/public/index.html';
 
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    
-    var fs = require('fs');
-    let result = 'initial';
-    fs.readFile(indexFile, 'utf8', function (err, data) {
-        if (err) {
-            initial = "ServerErr:" + err;
-            return console.log(err);
-        }
 
-        let result = data.replace(/{ CLIENT }/g, `{ip_addr: '${ip}' }`);
-        res.send(result);
-    });
+    let data = fs.readFileSync(indexFile, 'utf8');
+
+    result = data.replace(/{ CLIENT }/g, `{ip_addr: '${ip}' }`);
+    res.send(result);
+});
+
+app.get('/trace', (req, res) => {
+    trace(req, "req", "/trace");
+    res.sendFile(__dirname + '/persistence/trace.txt');
 });
 
 app.use(express.static(__dirname + '/public'));
@@ -49,6 +49,7 @@ io.on('connection', socket => {
                 active: true
             });
         }
+        trace(socket, "socket", "enterGame " + data.playerName);
 
         emitOnlineUsers();
     });
@@ -90,6 +91,7 @@ io.on('connection', socket => {
 function leaveGame(socket) {
     let index = players.findIndex(item => item.playerId == socket.id);
     if (index > -1) {
+        trace(socket, "socket", "leaveGame " + players[index].playerName);
         players.splice(index, 1);
     }
     emitOnlineUsers();
@@ -105,5 +107,18 @@ function emitTopList(socket) {
         total: players.length,
         rank: players.findIndex(player => player.id == socket.id) + 1,
         playerId: socket.id
+    });
+}
+
+function trace(req, reqType, msg) {
+
+    const ip = reqType == "req" ? req.headers['x-forwarded-for'] || req.socket.remoteAddress
+        : req.handshake.address;
+    const datetime = new Date().toString();
+
+    let traceMsg = datetime + ' ' + ip + ' ' + msg;
+
+    fs.appendFile(__dirname + '/persistence/' + 'trace.txt', traceMsg + '\n', function (err) {
+        if (err) throw err;
     });
 }
