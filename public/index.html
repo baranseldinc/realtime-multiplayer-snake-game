@@ -75,7 +75,7 @@
         const client = { CLIENT };
 
         // client object will be fill by server
-        document.getElementById('client-info').innerHTML = 'ClienIP: ' + client.ip;
+        document.getElementById('client-info').innerHTML = 'ClienIP: ' + client.ip_addr;
 
         socket.on('onlineUsers', data => {
             document.getElementById('totalOnline').innerHTML = data;
