@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <span id="client-info" style="position: fixed; top: 0; left: 0; font-size: 12px;"></span>
     <div>
 
     </div>
@@ -71,6 +72,10 @@
     <script>
 
         const socket = io();
+        const client = { CLIENT };
+
+        // client object will be fill by server
+        document.getElementById('client-info').innerHTML = 'ClienIP: ' + client.ip;
 
         socket.on('onlineUsers', data => {
             document.getElementById('totalOnline').innerHTML = data;

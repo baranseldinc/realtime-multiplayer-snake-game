@@ -10,11 +10,26 @@ server.listen(process.env.PORT || port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+    const indexFile = __dirname + '/public/index.html';
+
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    
+    var fs = require('fs');
+    let result = 'initial';
+    fs.readFile(indexFile, 'utf8', function (err, data) {
+        if (err) {
+            initial = "ServerErr:" + err;
+            return console.log(err);
+        }
+
+        let result = data.replace(/{ CLIENT }/g, `{ip_addr: '${ip}' }`);
+        res.send(result);
+    });
 });
+
+app.use(express.static(__dirname + '/public'));
 
 
 io.on('connection', socket => {
