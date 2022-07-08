@@ -6,7 +6,7 @@ Each user is able to see live scores while playing.
 ## Features
 
 - Both desktop and mobile versions are provided
-- To be informed other users scores and how many online users in
+- Informing other user scores and online users in
 - Possible to change direction of snake without waiting its last moves completion (Until 5 key press)
 
 ## Tech
